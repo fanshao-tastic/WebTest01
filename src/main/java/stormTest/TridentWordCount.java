@@ -64,6 +64,8 @@ public class TridentWordCount {
       for (int i = 0; i < 20; i++) {
         System.out.println("DRPC RESULT " +i+":---"+ drpc.execute("words", "cat the dog jumped how"));
         Thread.sleep(500);
+       // System.out.println("DRPC RESULT " +i+":---"+ drpc.execute("words", "cat the dog"));       
+       // Thread.sleep(500);
       }
     }
     else {
