@@ -38,7 +38,11 @@ import storm.trident.state.map.ReadOnlyMapState;
 import storm.trident.tuple.TridentTuple;
 
 import java.util.*;
-
+/**
+ * date：7.23
+ * @author fan
+ * @version1.0.0
+ * */
 public class TridentReach {
   public static Map<String, List<String>> TWEETERS_DB = new HashMap<String, List<String>>() {{
     put("foo.com/blog/1", Arrays.asList("sally", "bob", "tim", "george", "nathan"));
