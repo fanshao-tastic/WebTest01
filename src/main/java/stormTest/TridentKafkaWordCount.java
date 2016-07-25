@@ -36,6 +36,7 @@ import storm.kafka.StringScheme;
 import storm.kafka.ZkHosts;
 import storm.kafka.bolt.KafkaBolt;
 import storm.kafka.bolt.mapper.FieldNameBasedTupleToKafkaMapper;
+import storm.kafka.bolt.mapper.TupleToKafkaMapper;
 import storm.kafka.bolt.selector.DefaultTopicSelector;
 import storm.kafka.trident.TransactionalTridentKafkaSpout;
 import storm.kafka.trident.TridentKafkaConfig;
@@ -157,11 +158,10 @@ public class TridentKafkaWordCount {
          * The output field of the RandomSentenceSpout ("word") is provided as the boltMessageField
          * so that this gets written out as the message in the kafka topic.
          */
-    
-		KafkaBolt bolt = new KafkaBolt()
-				//.withProducerProperties(prop)
-                .withTopicSelector(new DefaultTopicSelector("test"))
-                .withTupleToKafkaMapper(new FieldNameBasedTupleToKafkaMapper("key", "word"));
+        //.withProducerProperties(prop)
+		KafkaBolt bolt = new KafkaBolt();
+				bolt.withTopicSelector(new DefaultTopicSelector("test"));
+                bolt.withTupleToKafkaMapper(new FieldNameBasedTupleToKafkaMapper("key", "word"));
         builder.setBolt("forwardToKafka", bolt, 1).shuffleGrouping("spout");
         return builder.createTopology();
     }
@@ -174,10 +174,14 @@ public class TridentKafkaWordCount {
      */
     public Properties getProducerConfig() {
         Properties props = new Properties();
-     //   props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokerUrl);
-      //  props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "kafka.common.serialization.StringSerializer");
-      //  props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "kafka.common.serialization.StringSerializer");
-      //  props.put(ProducerConfig.CLIENT_ID_CONFIG, "storm-kafka-producer");
+        Producer 
+       // ProducerConfig producerconfig=new ProducerConfig(props);
+      //  props.put(producerconfig.brokerList(), "172.16.197.195:9192");
+       // props.put(producerconfig.keySerializerClass(), "kafka.common.serialization.StringSerializer");
+      //  props.put(producerconfig.serializerClass(), "kafka.common.serialization.StringSerializer");
+       // props.put(producerconfig.clientId(), "storm-kafka-producer");
+        props.put("serializer.class", "kafka.serializer.StringEncoder");
+        props.put("metadata.broker.list", "172.16.197.195:9192");
         return props;
     }
 
@@ -250,9 +254,9 @@ public class TridentKafkaWordCount {
                 Thread.sleep(1000);
             }
 
-            cluster.killTopology("kafkaBolt");
-            cluster.killTopology("wordCounter");
-            cluster.shutdown();
+           // cluster.killTopology("kafkaBolt");
+          //  cluster.killTopology("wordCounter");
+           // cluster.shutdown();
         }
     }
 }
